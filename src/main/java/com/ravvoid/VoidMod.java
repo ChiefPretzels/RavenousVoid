@@ -3,6 +3,7 @@ package com.ravvoid;
 import org.apache.logging.log4j.Logger;
 
 import com.ravvoid.blocks.tileentity.TileEntityAltar;
+import com.ravvoid.blocks.tileentity.TileEntityConduit;
 import com.ravvoid.blocks.tileentity.TileEntityCrystalizer;
 import com.ravvoid.blocks.tileentity.TileEntityPile;
 import com.ravvoid.client.render.RenderVoidBeast;
@@ -51,6 +52,7 @@ public class VoidMod {
 		GameRegistry.registerTileEntity(TileEntityPile.class, "tileentitypile");
 		GameRegistry.registerTileEntity(TileEntityAltar.class, "tileentityaltar");
 		GameRegistry.registerTileEntity(TileEntityCrystalizer.class, "tileentitycrystalizer");
+		GameRegistry.registerTileEntity(TileEntityConduit.class, "tileentityconduit");
 		GameRegistry.registerWorldGenerator(new OreGen(), 0);
 		VoidEntities.registerEntities();
 		CraftingManager.mainRegistery();

@@ -52,7 +52,9 @@ public class AwakenedVoidOrb extends Item {
 	    }
 	    
 	    public double getLight(World world, BlockPos pos) {
-		return (world.getLight(pos, true) * .625);
+		    if ((world.getLight(pos, true) * .625) !=2.5)
+			    return world.getLight(pos, true) * .625;
+		    else return 10;
 	    }
 
 	@SideOnly(Side.CLIENT)
@@ -90,10 +92,6 @@ public class AwakenedVoidOrb extends Item {
 			if (this.getLight(world, player.getPosition()) <= 5) this.powerHelper(item, 5-this.getLight(world, player.getPosition()));
 					
 
-
-			System.out.println(item.getTagCompound().getBoolean("active"));
-			System.out.println(itemSlot);
-			System.out.println(this.getDamage(item) + 3);
 			if (item.getTagCompound().getBoolean("active") && itemSlot <= 10 && this.getDamage(item) + 3 < 2000) {
 
 				this.powerHelper(item, -3);

@@ -8,6 +8,7 @@ import com.ravvoid.blocks.ShardBlock;
 import com.ravvoid.blocks.VoidAltar;
 import com.ravvoid.blocks.VoidOre;
 import com.ravvoid.blocks.VoidRend;
+import com.ravvoid.blocks.Conduit;
 import com.ravvoid.blocks.Crystalizer;
 
 import net.minecraft.block.Block;
@@ -22,13 +23,14 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class VoidBlocks {
 	
 	public static Block VOIDORE;
-	public static Block	PILEBLOCK;
-	public static Block	PILEBLOCKACTIVE;
-	public static Block	SHARDBLOCK;
-	public static Block	VOIDALTAR;
-	public static Block	VOIDREND;
-	public static Block	CRYSTALIZER;
-	public static Block	PURESHARDBLOCK;
+	public static Block PILEBLOCK;
+	public static Block PILEBLOCKACTIVE;
+	public static Block SHARDBLOCK;
+	public static Block VOIDALTAR;
+	public static Block VOIDREND;
+	public static Block CRYSTALIZER;
+	public static Block PURESHARDBLOCK;
+	public static Block CONDUIT;
 	
 	public static void init() {
 		
@@ -36,10 +38,11 @@ public class VoidBlocks {
 		VOIDALTAR = new VoidAltar(Material.PISTON).setRegistryName("voidaltar").setLightLevel(0.3f).setUnlocalizedName("voidaltar").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
 		PILEBLOCK = new PileBlock(Material.GROUND).setRegistryName("pileblock").setUnlocalizedName("pileblock");
 		PILEBLOCKACTIVE = new PileBlock(Material.GROUND).setRegistryName("pileblockactive").setUnlocalizedName("pileblockactive").setLightLevel(0.3f);
-		SHARDBLOCK = new ShardBlock(Material.GLASS).setRegistryName("shardblock").setUnlocalizedName("shardblock").setCreativeTab(VoidTabs.tabVoid).setLightLevel(0.3f).setHardness(0.3F);
+		SHARDBLOCK = new ShardBlock(Material.GLASS).setRegistryName("shardblock").setUnlocalizedName("shardblock").setLightLevel(0.3f).setHardness(0.3F);
 		VOIDREND = new VoidRend(Material.GROUND).setRegistryName("voidrend").setUnlocalizedName("voidrend").setLightLevel(0.5f).setHardness(0.3F);
 		CRYSTALIZER = new Crystalizer(Material.PISTON).setRegistryName("crystalizer").setLightLevel(0.3f).setUnlocalizedName("crystalizer").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
-		PURESHARDBLOCK = new PureShardBlock(Material.GLASS).setRegistryName("pureshardblock").setUnlocalizedName("pureshardblock").setCreativeTab(VoidTabs.tabVoid).setLightLevel(0.5f).setHardness(0.3F);
+		PURESHARDBLOCK = new PureShardBlock(Material.GLASS).setRegistryName("pureshardblock").setUnlocalizedName("pureshardblock").setLightLevel(0.5f).setHardness(0.3F);
+		CONDUIT = new Conduit(Material.PISTON).setRegistryName("conduit").setLightLevel(0.3f).setUnlocalizedName("conduit").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
 		
 		VOIDORE.setHarvestLevel("pickaxe", 2);
 	}
@@ -54,6 +57,7 @@ public class VoidBlocks {
 		registerBlock(VOIDREND);
 		registerBlock(CRYSTALIZER);
 		registerBlock(PURESHARDBLOCK);
+		registerBlock(CONDUIT);
 	}
 	
 	public static void registerRenders() {
@@ -66,6 +70,7 @@ public class VoidBlocks {
 		registerRender(VOIDREND);
 		registerRender(CRYSTALIZER);
 		registerRender(PURESHARDBLOCK);
+		registerRender(CONDUIT);
 	}
 	
 	public static void registerBlock(Block block) {

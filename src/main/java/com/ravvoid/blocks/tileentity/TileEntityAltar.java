@@ -66,13 +66,13 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		@Override
 		public void readFromNBT(NBTTagCompound compound) {
 			super.readFromNBT(compound);
-			this.display = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("ItemHandler"));
+			this.display = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("display"));
 		}
 
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 			compound = super.writeToNBT(compound);
-			if (this.display != null)compound.setTag("ItemHandler", this.display.serializeNBT());
+			if (this.display != null)compound.setTag("display", this.display.serializeNBT());
 			return compound;
 		}
 		
@@ -152,16 +152,17 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 			if (this.worldObj.isRemote && this.delay < 60 && this.delay != 0) {this.delay++;}
 			else if (this.worldObj.isRemote && this.delay == 0) {}
 			else if (this.worldObj.isRemote) {
-					Random rand = new Random();
-					double d0 = (double)this.pos.getX() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
-	                double d1 = (double)((float)this.pos.getY() + 1F);
-	                double d2 = (double)this.pos.getZ() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
-	                float f = 15.0F;
-	                float f1 = f * 0.6F + 0.4F;
-	                float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
-	                float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
-	                this.worldObj.spawnParticle(EnumParticleTypes.DRIP_LAVA, d0, d1, d2, (double)f1, (double)f2, (double)f3, new int[0]);
-	                this.delay = 1;
+				
+				Random rand = new Random();
+				double d0 = (double)this.pos.getX() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
+				double d1 = (double)((float)this.pos.getY() + 1F);
+				double d2 = (double)this.pos.getZ() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
+				float f = 15.0F;
+				float f1 = f * 0.6F + 0.4F;
+		               	float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
+		               	float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
+		               	this.worldObj.spawnParticle(EnumParticleTypes.DRIP_LAVA, d0, d1, d2, (double)f1, (double)f2, (double)f3, new int[0]);
+		               	this.delay = 1;
 			}
 			
 			if(this.entity != null && this.display != null && this.renderdelay == 0) {this.renderdelay++;}

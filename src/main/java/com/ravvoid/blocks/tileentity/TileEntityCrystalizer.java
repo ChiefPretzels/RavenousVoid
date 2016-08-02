@@ -105,12 +105,12 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 		else if (worldObj.isRemote && this.delaypart >= 20) {
 				Random rand = new Random();
 				double d0 = (double)this.pos.getX() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
-                double d1 = (double)((float)this.pos.getY() + 1F);
-                double d2 = (double)this.pos.getZ() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
-                float f = 15.0F;
-                float f1 = f * 0.6F + 0.4F;
-                float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
-                float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
+				double d1 = (double)((float)this.pos.getY() + 1F);
+				double d2 = (double)this.pos.getZ() + 0.5D + ((double)rand.nextFloat() - 0.5D) * 0.4D;
+				float f = 15.0F;
+				float f1 = f * 0.6F + 0.4F;
+				float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
+				float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
                 worldObj.spawnParticle(EnumParticleTypes.DRIP_LAVA, d0, d1, d2, (double)f1, (double)f2, (double)f3, new int[0]);
                 this.delaypart = 1;
 		}
