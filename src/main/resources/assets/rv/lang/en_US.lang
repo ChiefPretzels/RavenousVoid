@@ -1,0 +1,24 @@
+//Items
+item.voidshard.name=Void Shard
+item.voidorb.name=Void Orb
+item.voidfragments.name=Void Fragments
+item.fragmentpile.name=Void Fragment Pile
+item.beasthide.name=Beast Hide
+item.spirit.name=Spirit
+item.voidessence.name=Void Essence
+item.purevoidshard.name=Pure Void Shard
+item.awakenedvoidorb.name=Awakened Void Orb
+
+//Blocks
+tile.voidore.name=Void Shard Ore
+tile.shardblock.name=Void Shard
+tile.voidpile.name=Void Fragment Pile
+tile.voidaltar.name=Void Altar
+tile.crystalizer.name=Crystalizer
+
+//Entity
+entity.rv.voidbeast.name=Void Beast
+entity.rv.shade.name=Shade
+
+//Tab
+itemGroup.tabVoid=Ravenous Void
