@@ -40,14 +40,6 @@ public class AwakenedVoidOrb extends Item {
 		this.setMaxDamage(2001);
 		
 	}
-	
-	    public void onCreated(ItemStack item, World worldIn, EntityPlayer playerIn)
-	    {
-		    item.setTagCompound(new NBTTagCompound());
-		    this.setDamage(item, 2000);
-		    item.getTagCompound().setInteger("power", 2000);
-		    item.getTagCompound().setBoolean("active", false);
-	    }
 	    
 	    public boolean showDurabilityBar(ItemStack stack)
 	    {
@@ -86,21 +78,32 @@ public class AwakenedVoidOrb extends Item {
 	     * update it's contents.
 	     */
 	public void onUpdate(ItemStack item, World world, Entity player, int itemSlot, boolean isSelected) {
+		if (!item.hasTagCompound()) {
+			item.setTagCompound(new NBTTagCompound());
+			    this.setDamage(item, 2000);
+			    item.getTagCompound().setInteger("power", 2000);
+			    item.getTagCompound().setBoolean("active", false);
+		}
 		
 		if (this.DELAY >= 100 && this.getDamage(item) != 0) {
-			if (this.getLight(world, player.getPosition()) <= 5) this.powerHelper(item, 6-this.getLight(world, player.getPosition()));
+
+			if (this.getLight(world, player.getPosition()) <= 5) this.powerHelper(item, 5-this.getLight(world, player.getPosition()));
 					
-			if (item.getTagCompound().getBoolean("active") && itemSlot <= 10) {
-				if (this.getDamage(item) + 3 < 2000) {
-					this.setDamage(item, (int) (this.getDamage(item) +(4)));
-					item.getTagCompound().setShort("power", (short) this.getDamage(item));
-					((EntityLivingBase) player).addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 100));
-				}
-				else {
-					item.getTagCompound().setBoolean("active", true);
-					((EntityLivingBase) player).removePotionEffect(MobEffects.NIGHT_VISION);
-				}
-			}			
+
+
+			System.out.println(item.getTagCompound().getBoolean("active"));
+			System.out.println(itemSlot);
+			System.out.println(this.getDamage(item) + 3);
+			if (item.getTagCompound().getBoolean("active") && itemSlot <= 10 && this.getDamage(item) + 3 < 2000) {
+
+				this.powerHelper(item, -3);
+				if (!world.isRemote)((EntityLivingBase) player).addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
+			}
+			else {
+				item.getTagCompound().setBoolean("active", false);
+				((EntityLivingBase) player).removePotionEffect(MobEffects.NIGHT_VISION);
+			}
+			
 			this.getDurabilityForDisplay(item);
 			this.DELAY = 1;
 			((EntityPlayer)player).inventory.markDirty();
@@ -126,12 +129,11 @@ public class AwakenedVoidOrb extends Item {
 		if (item.getTagCompound().getInteger("power") <= 1900 && !item.getTagCompound().getBoolean("active")) {
 			
 
-			item.getTagCompound().setBoolean("active", false);
-			this.setDamage(item, (int) (this.getDamage(item) +(100)));
-			item.getTagCompound().setShort("power", (short) this.getDamage(item));
-			player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 100));
+			item.getTagCompound().setBoolean("active", true);
+			this.powerHelper(item, -100);
+			if (!world.isRemote)player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
 			return new ActionResult(EnumActionResult.SUCCESS, item);
-		} else if (!item.getTagCompound().getBoolean("active")) {
+		} else if (item.getTagCompound().getBoolean("active")) {
 			item.getTagCompound().setBoolean("active", false);
 			player.removePotionEffect(MobEffects.NIGHT_VISION);
 			return new ActionResult(EnumActionResult.SUCCESS, item);
