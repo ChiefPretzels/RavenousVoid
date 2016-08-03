@@ -37,7 +37,7 @@ public class AwakenedVoidOrb extends Item {
 	
 	public AwakenedVoidOrb () {
 		this.maxStackSize = 1;
-		this.setMaxDamage(2001);
+		this.setMaxDamage(1001);
 		
 	}
 	    
@@ -61,16 +61,16 @@ public class AwakenedVoidOrb extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
 	{
 		    tooltip.add(String.valueOf(this.getLight(player.getEntityWorld(), player.getPosition())));
-		    tooltip.add(String.valueOf(2000 - this.getDamage(stack)+1));
+		    tooltip.add(String.valueOf(1000 - this.getDamage(stack)+1));
 		    
 	}
 	
 	public void powerHelper(ItemStack item, double power) {
-		if (this.getDamage(item) - power <= 2000) {
+		if (this.getDamage(item) - power <= 1000) {
 			this.setDamage(item, (int) (this.getDamage(item) - power));
 			item.getTagCompound().setShort("power", (short) this.getDamage(item));
 		} else {
-			this.setDamage(item, 2000);
+			this.setDamage(item, 1000);
 			item.getTagCompound().setShort("power", (short) this.getDamage(item));
 		}
 	}
@@ -82,8 +82,8 @@ public class AwakenedVoidOrb extends Item {
 	public void onUpdate(ItemStack item, World world, Entity player, int itemSlot, boolean isSelected) {
 		if (!item.hasTagCompound()) {
 			item.setTagCompound(new NBTTagCompound());
-			    this.setDamage(item, 2000);
-			    item.getTagCompound().setInteger("power", 2000);
+			    this.setDamage(item, 1000);
+			    item.getTagCompound().setInteger("power", 1000);
 			    item.getTagCompound().setBoolean("active", false);
 		}
 		
@@ -92,10 +92,10 @@ public class AwakenedVoidOrb extends Item {
 			if (this.getLight(world, player.getPosition()) <= 5) this.powerHelper(item, 5-this.getLight(world, player.getPosition()));
 					
 
-			if (item.getTagCompound().getBoolean("active") && itemSlot <= 10 && this.getDamage(item) + 3 < 2000) {
+			if (item.getTagCompound().getBoolean("active") && itemSlot <= 10 && this.getDamage(item) + 3 < 1000) {
 
 				this.powerHelper(item, -3);
-				if (!world.isRemote)((EntityLivingBase) player).addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
+				((EntityLivingBase) player).addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 400, -1));
 			}
 			else {
 				item.getTagCompound().setBoolean("active", false);
@@ -124,12 +124,12 @@ public class AwakenedVoidOrb extends Item {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack item, World world, EntityPlayer player, EnumHand hand)
 	{
 		
-		if (item.getTagCompound().getInteger("power") <= 1900 && !item.getTagCompound().getBoolean("active")) {
+		if (item.getTagCompound().getInteger("power") <= 900 && !item.getTagCompound().getBoolean("active")) {
 			
 
 			item.getTagCompound().setBoolean("active", true);
 			this.powerHelper(item, -100);
-			if (!world.isRemote)player.addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 30));
+			((EntityLivingBase) player).addPotionEffect(new PotionEffect(MobEffects.NIGHT_VISION, 400, -1));
 			return new ActionResult(EnumActionResult.SUCCESS, item);
 		} else if (item.getTagCompound().getBoolean("active")) {
 			item.getTagCompound().setBoolean("active", false);
@@ -138,27 +138,4 @@ public class AwakenedVoidOrb extends Item {
 		}
 		return new ActionResult(EnumActionResult.FAIL, item);
 	}
-	
-	protected RayTraceResult rayTrace(World worldIn, EntityPlayer playerIn, boolean useLiquids)
-	{
-		float f = playerIn.rotationPitch;
-		float f1 = playerIn.rotationYaw;
-		double d0 = playerIn.posX;
-		double d1 = playerIn.posY + (double)playerIn.getEyeHeight();
-		double d2 = playerIn.posZ;
-		Vec3d vec3d = new Vec3d(d0, d1, d2);
-		        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
-		        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float)Math.PI);
-		        float f4 = -MathHelper.cos(-f * 0.017453292F);
-		        float f5 = MathHelper.sin(-f * 0.017453292F);
-		        float f6 = f3 * f4;
-		        float f7 = f2 * f4;
-		        double d3 = 5.0D;
-		        if (playerIn instanceof net.minecraft.entity.player.EntityPlayerMP)
-		        {
-			        d3 = ((net.minecraft.entity.player.EntityPlayerMP)playerIn).interactionManager.getBlockReachDistance();
-		        }
-		        Vec3d vec3d1 = vec3d.addVector((double)f6 * d3, (double)f5 * d3, (double)f7 * d3);
-		        return worldIn.rayTraceBlocks(vec3d, vec3d1, useLiquids, !useLiquids, false);
-	    }
 }

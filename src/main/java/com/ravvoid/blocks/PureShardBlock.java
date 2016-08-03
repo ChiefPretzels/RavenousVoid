@@ -44,12 +44,12 @@ public class PureShardBlock extends Block {
 	
 	public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
 	{
-	    return NULL_AABB;
+	    return bounds;
 	}
 	
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isFullyOpaque();
+		return worldIn.isSideSolid(pos.down(), EnumFacing.UP, true);
     }
 	
 	public boolean isOpaqueCube(IBlockState state)

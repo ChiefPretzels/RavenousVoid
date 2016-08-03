@@ -15,6 +15,7 @@ tile.shardblock.name=Void Shard
 tile.voidpile.name=Void Fragment Pile
 tile.voidaltar.name=Void Altar
 tile.crystalizer.name=Crystalizer
+tile.conduit.name=Conduit
 
 //Entity
 entity.rv.voidbeast.name=Void Beast

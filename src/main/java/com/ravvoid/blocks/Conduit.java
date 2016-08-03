@@ -68,7 +68,7 @@ public class Conduit extends Block implements ITileEntityProvider {
 	
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isFullyOpaque();
+        return worldIn.isSideSolid(pos.down(), EnumFacing.UP, true);
     }
 
     public boolean isFullCube(IBlockState state)
@@ -109,6 +109,5 @@ public class Conduit extends Block implements ITileEntityProvider {
         if(((TileEntityConduit) te).entity != null)((TileEntityConduit) te).entity.setDead();
         super.breakBlock(worldIn, pos, state);
     }
-  //TODO display update tick with sprite from stored, add right click stores item in hand, only if it is on a list,\
     
 }

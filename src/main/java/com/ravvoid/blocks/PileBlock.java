@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -95,7 +96,7 @@ public class PileBlock extends Block implements ITileEntityProvider {
     
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isFullyOpaque() && worldIn.getBlockState(pos.up()).getBlock() == Blocks.AIR;
+        return worldIn.isSideSolid(pos.down(), EnumFacing.UP, true && worldIn.getBlockState(pos.up()).getBlock() == Blocks.AIR);
     }
 
     
