@@ -2,7 +2,7 @@ package com.ravvoid.proxy;
 
 import org.lwjgl.opengl.GL11;
 
-import com.ravvoid.blocks.tileentity.TileEntityCrystalizer;
+import com.ravvoid.blocks.tileentity.TileEntityCrystallizer;
 import com.ravvoid.client.render.RenderShade;
 import com.ravvoid.client.render.RenderVoidBeast;
 import com.ravvoid.core.VoidBlocks;

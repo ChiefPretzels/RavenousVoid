@@ -10,7 +10,7 @@ import com.ravvoid.blocks.VoidOre;
 import com.ravvoid.blocks.VoidRend;
 import com.ravvoid.blocks.VoidRift;
 import com.ravvoid.blocks.Conduit;
-import com.ravvoid.blocks.Crystalizer;
+import com.ravvoid.blocks.Crystallizer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -29,7 +29,7 @@ public class VoidBlocks {
 	public static Block SHARDBLOCK;
 	public static Block VOIDALTAR;
 	public static Block VOIDREND;
-	public static Block CRYSTALIZER;
+	public static Block CRYSTALLIZER;
 	public static Block PURESHARDBLOCK;
 	public static Block CONDUIT;
 	public static Block VOIDRIFT;
@@ -42,7 +42,7 @@ public class VoidBlocks {
 		PILEBLOCKACTIVE = new PileBlock(Material.GROUND).setRegistryName("pileblockactive").setUnlocalizedName("pileblockactive").setLightLevel(0.3f);
 		SHARDBLOCK = new ShardBlock(Material.GLASS).setRegistryName("shardblock").setUnlocalizedName("shardblock").setLightLevel(0.3f).setHardness(0.3F);
 		VOIDREND = new VoidRend(Material.GROUND).setRegistryName("voidrend").setUnlocalizedName("voidrend").setLightLevel(0.5f).setHardness(0.3F);
-		CRYSTALIZER = new Crystalizer(Material.PISTON).setRegistryName("crystalizer").setLightLevel(0.3f).setUnlocalizedName("crystalizer").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
+		CRYSTALLIZER = new Crystallizer(Material.PISTON).setRegistryName("crystallizer").setLightLevel(0.3f).setUnlocalizedName("crystallizer").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
 		PURESHARDBLOCK = new PureShardBlock(Material.GLASS).setRegistryName("pureshardblock").setUnlocalizedName("pureshardblock").setLightLevel(0.5f).setHardness(0.3F);
 		CONDUIT = new Conduit(Material.PISTON).setRegistryName("conduit").setLightLevel(0.3f).setUnlocalizedName("conduit").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
 		VOIDRIFT = new VoidRift(Material.GROUND).setRegistryName("voidrift").setUnlocalizedName("voidrift").setLightLevel(0.5f).setHardness(0.3F);
@@ -58,7 +58,7 @@ public class VoidBlocks {
 		registerBlock(SHARDBLOCK);
 		registerBlock(VOIDALTAR);
 		registerBlock(VOIDREND);
-		registerBlock(CRYSTALIZER);
+		registerBlock(CRYSTALLIZER);
 		registerBlock(PURESHARDBLOCK);
 		registerBlock(CONDUIT);
 		registerBlock(VOIDRIFT);
@@ -72,7 +72,7 @@ public class VoidBlocks {
 		registerRender(SHARDBLOCK);
 		registerRender(VOIDALTAR);
 		registerRender(VOIDREND);
-		registerRender(CRYSTALIZER);
+		registerRender(CRYSTALLIZER);
 		registerRender(PURESHARDBLOCK);
 		registerRender(CONDUIT);
 		registerRender(VOIDRIFT);

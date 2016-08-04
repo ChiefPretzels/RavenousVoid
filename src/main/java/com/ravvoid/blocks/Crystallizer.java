@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.ravvoid.blocks.tileentity.TileEntityAltar;
-import com.ravvoid.blocks.tileentity.TileEntityCrystalizer;
+import com.ravvoid.blocks.tileentity.TileEntityCrystallizer;
 import com.ravvoid.blocks.tileentity.TileEntityPile;
 import com.ravvoid.core.VoidBlocks;
 import com.ravvoid.entity.EntityItemProxy;
@@ -36,7 +36,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 
-public class Crystalizer extends Block implements ITileEntityProvider {
+public class Crystallizer extends Block implements ITileEntityProvider {
 
 	protected static final AxisAlignedBB bounds = new AxisAlignedBB(0.1875d, 0.0d, 0.1875d, 0.8125d, 0.75d, 0.8125d);
 	protected static final AxisAlignedBB stand = new AxisAlignedBB(0.1875d, 0.0d, 0.1875d, 0.8125d, 0.4375d, 0.8125d);
@@ -46,7 +46,7 @@ public class Crystalizer extends Block implements ITileEntityProvider {
 	protected static final AxisAlignedBB south = new AxisAlignedBB(0.1875d, 0.4375d, 0.21875d, 0.8125d, 0.75d, 0.25);
 	public static final IProperty liquid = PropertyInteger.create("liquid", 0, 2);
 	
-	public Crystalizer(Material materialIn) {
+	public Crystallizer(Material materialIn) {
 		super(materialIn);
 	}
 	
@@ -69,7 +69,7 @@ public class Crystalizer extends Block implements ITileEntityProvider {
 	@Override
 	public TileEntity createNewTileEntity(World worldIn, int meta) {
 		
-		return new TileEntityCrystalizer();
+		return new TileEntityCrystallizer();
 	}
 	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
@@ -99,7 +99,7 @@ public class Crystalizer extends Block implements ITileEntityProvider {
     @Override
 	public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity ent) {
 
-		TileEntityCrystalizer tile = (TileEntityCrystalizer) world.getTileEntity(pos);
+		TileEntityCrystallizer tile = (TileEntityCrystallizer) world.getTileEntity(pos);
 		if(ent instanceof EntityItem && !tile.active && ((Integer) world.getBlockState(pos).getValue(liquid)).intValue() > 0) {
 			tile.crystalyzerList((EntityItem) ent);
 		}
@@ -118,7 +118,7 @@ public class Crystalizer extends Block implements ITileEntityProvider {
                     playerIn.setHeldItem(hand, new ItemStack(Items.BUCKET));
                 }
             }
-			worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(Crystalizer.liquid, Integer.valueOf(1)));
+			worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(Crystallizer.liquid, Integer.valueOf(1)));
             return true;
         }
         else if (ItemStack.areItemsEqual(heldItem, new ItemStack(Items.BUCKET)) && fill == 1)
@@ -139,7 +139,7 @@ public class Crystalizer extends Block implements ITileEntityProvider {
                     }
                 }
             }
-			worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(Crystalizer.liquid, Integer.valueOf(0)));
+			worldIn.setBlockState(pos, worldIn.getBlockState(pos).withProperty(Crystallizer.liquid, Integer.valueOf(0)));
             return true;
         }
         else return false;
@@ -148,8 +148,8 @@ public class Crystalizer extends Block implements ITileEntityProvider {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity te = worldIn.getTileEntity(pos);
-        if(((TileEntityCrystalizer) te).input != null) spawnAsEntity(worldIn, pos, ((TileEntityCrystalizer) te).input);
-        if(((TileEntityCrystalizer) te).display != null)((TileEntityCrystalizer) te).display.setDead();
+        if(((TileEntityCrystallizer) te).input != null) spawnAsEntity(worldIn, pos, ((TileEntityCrystallizer) te).input);
+        if(((TileEntityCrystallizer) te).display != null)((TileEntityCrystallizer) te).display.setDead();
         super.breakBlock(worldIn, pos, state);
     }    
 }

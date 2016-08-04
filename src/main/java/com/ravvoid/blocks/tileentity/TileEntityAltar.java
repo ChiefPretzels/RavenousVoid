@@ -165,7 +165,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 
 					
 					if(count == 9) {
-						if (this.counter < 20) { // TODO set back up to 2000
+						if (this.counter < 2000) {
 							this.counter++;
 							if (this.delay == 0) {this.delay = 1;}
 						} else {

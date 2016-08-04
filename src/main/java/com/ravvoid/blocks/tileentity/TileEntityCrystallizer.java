@@ -2,7 +2,7 @@ package com.ravvoid.blocks.tileentity;
 
 import java.util.Random;
 
-import com.ravvoid.blocks.Crystalizer;
+import com.ravvoid.blocks.Crystallizer;
 import com.ravvoid.blocks.PileBlock;
 import com.ravvoid.core.VoidItems;
 import com.ravvoid.entity.EntityItemProxy;
@@ -20,7 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 
-public class TileEntityCrystalizer extends TileEntity implements ITickable {
+public class TileEntityCrystallizer extends TileEntity implements ITickable {
 
 	public Integer essence = 0;
 	public boolean active;
@@ -91,7 +91,7 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 				this.output = null;
 				this.input = null;
                 if (this.display != null) {this.display.setDead(); this.display = null;}
-    			worldObj.setBlockState(this.pos, worldObj.getBlockState(this.pos).withProperty(Crystalizer.liquid, Integer.valueOf(0)));
+    			worldObj.setBlockState(this.pos, worldObj.getBlockState(this.pos).withProperty(Crystallizer.liquid, Integer.valueOf(0)));
 				this.delaypart = 0;
 				this.change();
 				if (!worldObj.isRemote) {worldObj.spawnEntityInWorld(spawn);}
@@ -121,7 +121,7 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 		ItemStack stack = ent.getEntityItem().copy();
 
 				if(ItemStack.areItemsEqual(stack, new ItemStack(VoidItems.VOIDESSENCE)) && this.input == null) {
-					if (this.essence<4 && ((Integer) worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue() == 1) {
+					if (this.essence<4 && ((Integer) worldObj.getBlockState(this.pos).getValue(Crystallizer.liquid)).intValue() == 1) {
 						ent.setDead();
 						if (stack.stackSize >= (4 - this.essence)) {
 							stack.stackSize = stack.stackSize - (4 - this.essence);
@@ -144,12 +144,12 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 							spawn.setVelocity(0, 0, 0);
 							if (!this.worldObj.isRemote)this.worldObj.spawnEntityInWorld(spawn);
 						}
-						this.worldObj.setBlockState(this.pos, this.worldObj.getBlockState(this.pos).withProperty(Crystalizer.liquid, Integer.valueOf(2)));
+						this.worldObj.setBlockState(this.pos, this.worldObj.getBlockState(this.pos).withProperty(Crystallizer.liquid, Integer.valueOf(2)));
 						this.essence = 0;
 					}
 				}
 				else if (ItemStack.areItemsEqual(stack, new ItemStack(VoidItems.VOIDFRAGMENTS)) && this.input == null) {
-					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue() == 2) {
+					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystallizer.liquid)).intValue() == 2) {
 						ent.setDead();
 						if (stack.stackSize > 1) {
 							stack.stackSize--;
@@ -162,7 +162,7 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 						this.input = stack.copy();
 					}
 				}else if (ItemStack.areItemsEqual(stack, new ItemStack(VoidItems.VOIDSHARD)) && this.input == null) {
-					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue() == 2) {
+					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystallizer.liquid)).intValue() == 2) {
 						ent.setDead();
 						if (stack.stackSize > 1) {
 							stack.stackSize--;
@@ -175,7 +175,7 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 						this.input = stack.copy();
 					}
 				}else if (ItemStack.areItemsEqual(stack, new ItemStack(VoidItems.VOIDORB)) && this.input == null) {
-					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue() == 2) {
+					if (((Integer) this.worldObj.getBlockState(this.pos).getValue(Crystallizer.liquid)).intValue() == 2) {
 						ent.setDead();
 						if (stack.stackSize > 1) {
 							stack.stackSize--;
@@ -189,6 +189,6 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 					}
 				}
 				else {}
-				int inter = ((Integer) worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue();
+				int inter = ((Integer) worldObj.getBlockState(this.pos).getValue(Crystallizer.liquid)).intValue();
 	}
 }
