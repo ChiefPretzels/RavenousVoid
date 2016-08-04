@@ -189,10 +189,6 @@ public class TileEntityCrystalizer extends TileEntity implements ITickable {
 					}
 				}
 				else {}
-				System.out.println(this.active);
-				System.out.println(this.output);
-				System.out.println(this.input);
 				int inter = ((Integer) worldObj.getBlockState(this.pos).getValue(Crystalizer.liquid)).intValue();
-				System.out.println(inter);
 	}
 }

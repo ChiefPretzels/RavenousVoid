@@ -61,7 +61,7 @@ public class AwakenedVoidOrb extends Item {
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced)
 	{
 		    tooltip.add(String.valueOf(this.getLight(player.getEntityWorld(), player.getPosition())));
-		    tooltip.add(String.valueOf(1000 - this.getDamage(stack)+1));
+		    tooltip.add(String.valueOf(1000 - this.getDamage(stack)));
 		    
 	}
 	

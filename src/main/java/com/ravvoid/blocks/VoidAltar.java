@@ -92,15 +92,15 @@ public class VoidAltar extends Block implements ITileEntityProvider {
         
         return false;
     }
-    
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
-    {
-		if (worldIn.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {worldIn.destroyBlock(pos.add(0, 2, 0), false);}
-        TileEntity te = worldIn.getTileEntity(pos);
-        if(((TileEntityAltar) te).display != null) spawnAsEntity(worldIn, pos, ((TileEntityAltar) te).display);
-        if(((TileEntityAltar) te).entity != null)((TileEntityAltar) te).entity.setDead();
-        super.breakBlock(worldIn, pos, state);
-    }
-  //TODO display update tick with sprite from stored, add right click stores item in hand, only if it is on a list,\
+	    
+	    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+	    {
+		    if (worldIn.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {worldIn.destroyBlock(pos.add(0, 2, 0), false);}
+		    TileEntity te = worldIn.getTileEntity(pos);
+		    if(((TileEntityAltar) te).rift)((TileEntityAltar) te).riftBreak();
+		    if(((TileEntityAltar) te).display != null) spawnAsEntity(worldIn, pos, ((TileEntityAltar) te).display);
+		    if(((TileEntityAltar) te).entity != null)((TileEntityAltar) te).entity.setDead();
+		    super.breakBlock(worldIn, pos, state);
+	    }
     
 }

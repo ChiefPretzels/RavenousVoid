@@ -8,11 +8,11 @@ import com.ravvoid.blocks.tileentity.TileEntityCrystalizer;
 import com.ravvoid.blocks.tileentity.TileEntityPile;
 import com.ravvoid.client.render.RenderVoidBeast;
 import com.ravvoid.core.CraftingManager;
+import com.ravvoid.core.OreGen;
 import com.ravvoid.core.Ref;
 import com.ravvoid.core.VoidEntities;
 import com.ravvoid.entity.mob.EntityVoidBeast;
 import com.ravvoid.proxy.CommonProxy;
-import com.ravvoid.world.OreGen;
 import com.ravvoid.proxy.CommonProxy; 
 
 import net.minecraft.entity.EntityList;

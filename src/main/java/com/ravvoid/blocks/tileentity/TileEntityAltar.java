@@ -2,12 +2,15 @@ package com.ravvoid.blocks.tileentity;
 
 import java.util.Random;
 
+import com.ravvoid.blocks.VoidRift;
 import com.ravvoid.core.Ref;
 import com.ravvoid.core.VoidBlocks;
 import com.ravvoid.core.VoidItems;
 import com.ravvoid.entity.EntityItemProxy;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -24,6 +27,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -39,10 +43,13 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		public ItemStack display;
 		public EntityItem entity;
 		public int counter;
+		public int rcounter;
+		public int mcounter;
 		public int delay;
-		public int summoncounter;
 		public int renderdelay;
 		public int upkeepdelay;
+		public boolean rift;
+		public EnumFacing direction;
 		
 		//nbt setup
 		@Override
@@ -67,12 +74,15 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		public void readFromNBT(NBTTagCompound compound) {
 			super.readFromNBT(compound);
 			this.display = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("display"));
+			this.rift = compound.getBoolean("rift");
+			
 		}
 
 		@Override
 		public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 			compound = super.writeToNBT(compound);
 			if (this.display != null)compound.setTag("display", this.display.serializeNBT());
+			compound.setBoolean("rift", rift);
 			return compound;
 		}
 		
@@ -81,11 +91,12 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		
 		public void update() {
 			
-			if(ItemStack.areItemsEqual(this.display, new ItemStack(VoidItems.VOIDORB)) || ItemStack.areItemsEqual(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) &&  this.worldObj.getBlockState(this.pos.up()).getBlock() == Blocks.AIR && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.AIR) {
+			//Void Rend spawn
+			if(ItemStack.areItemsEqual(this.display, new ItemStack(VoidItems.VOIDORB)) || ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) &&  this.worldObj.getBlockState(this.pos.up()).getBlock() == Blocks.AIR && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.AIR) {
 
 				if (powered(1)) {
-					if (this.counter < 2000) {
-						this.counter++;
+					if (this.rcounter < 2000) {
+						this.rcounter++;
 						if (this.delay == 0) {this.delay = 1;}
 					}
 					else {this.worldObj.setBlockState(this.pos.add(0, 2, 0), VoidBlocks.VOIDREND.getDefaultState()); }
@@ -94,9 +105,11 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 			
 			else {
 
-				if (this.counter != 0) {this.counter = 0; this.delay = 0;}
+				if (this.rcounter != 0) {this.rcounter = 0; this.delay = 0;}
 			}
 			
+			
+			//Rend Upkeep
 			if (this.worldObj.getBlockState(this.pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND && this.upkeepdelay >= 60) {
 				if(!powered(1)) {
 					this.worldObj.destroyBlock(this.pos.add(0, 2, 0), false);
@@ -107,10 +120,130 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 				this.upkeepdelay++;
 			}
 			
+			//Void Rift spawn
+			if(!this.rift && ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
+
+				if (this.display.getTagCompound().getShort("power") <= 800 && powered(2)) {
+					int count = 0;
+					BlockPos spos;
+					BlockPos cpos;
+					if (direction == EnumFacing.NORTH) {
+						spos = pos.add(-1,0,-3);
+						for(int y = 0; y<=2; y++) {
+							for(int x = 0; x<=2; x++) {
+								cpos = spos.add(x,y,0);
+								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+							}
+						}
+					} else if (direction == EnumFacing.SOUTH) {
+						
+						spos = pos.add(-1,0,3);
+						for(int y = 0; y<=2; y++) {
+							for(int x = 0; x<=2; x++) {
+								cpos = spos.add(x,y,0);
+								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+							}
+						}
+					} else if (direction == EnumFacing.EAST) {
+
+						spos = pos.add(3,0,-1);
+						for(int y = 0; y<=2; y++) {
+							for(int z = 0; z<=2; z++) {
+								cpos = spos.add(0,y,z);
+								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+							}
+						}
+					} else if (direction == EnumFacing.WEST) {
+						spos = pos.add(-3,0,-1);
+						for(int y = 0; y<=2; y++) {
+							for(int z = 0; z<=2; z++) {
+								cpos = spos.add(0,y,z);
+								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+							}
+						}
+					}
+
+					
+					if(count == 9) {
+						if (this.counter < 20) { // TODO set back up to 2000
+							this.counter++;
+							if (this.delay == 0) {this.delay = 1;}
+						} else {
+							
+							this.display.setItemDamage((this.display.getTagCompound().getShort("power") + 200));
+							this.display.getTagCompound().setShort("power", (short) (this.display.getTagCompound().getShort("power") + 200));
+							this.rift = true;
+							this.delay = 0;
+							this.counter = 0;
+							
+							System.out.print(this.direction);
+							int s = 0;
+							if (direction == EnumFacing.NORTH) {
+								spos = pos.add(-1,0,-3);
+								for(int y = 0; y<=2; y++) {
+									for(int x = 0; x<=2; x++) {
+										cpos = spos.add(x,y,0);
+										s++;
+										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+										
+									}
+								}
+							} else if (direction == EnumFacing.SOUTH) {
+								
+								spos = pos.add(1,0,3);
+								for(int y = 0; y<=2; y++) {
+									for(int x = 0; x>=-2; x--) {
+										cpos = spos.add(x,y,0);
+										s++;
+										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+									}
+								}
+							} else if (direction == EnumFacing.EAST) {
+								
+								spos = pos.add(3,0,-1);
+								for(int y = 0; y<=2; y++) {
+									for(int z = 0; z<=2; z++) {
+										cpos = spos.add(0,y,z);
+										s++;
+										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+									}
+								}
+							} else if (direction == EnumFacing.WEST) {
+								spos = pos.add(-3,0,1);
+								for(int y = 0; y<=2; y++) {
+									for(int z = 0; z>=-2; z--) {
+										cpos = spos.add(0,y,z);
+										s++;
+										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+									}
+								}
+								
+							}
+							count = 0;
+						}
+					}else {
+					}
+				} else {
+					this.delay = 0;
+					this.counter = 0;
+				}
+				
+			}else if (this.rift && ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
+				if (this.counter >= 300) {
+					if (display.getTagCompound().getShort("power") + 1 <=2000) {
+						this.display.setItemDamage((this.display.getTagCompound().getShort("power") + 1));
+						this.display.getTagCompound().setShort("power", (short) (this.display.getTagCompound().getShort("power") + 1));
+						this.counter = 0;
+					} else this.riftBreak();						
+				} else this.counter++;
+			}else if (this.rift) this.riftBreak();
+			
+			
+			//Mob spawn
 			if(this.display !=null && Ref.altarListTier1(this.display, this.worldObj) != null && this.worldObj.getBlockState(this.pos.up()).getBlock() == Blocks.AIR && this.worldObj.getBlockState(this.pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
 					
-				if (this.summoncounter < 600) {
-						this.summoncounter++;
+				if (this.mcounter < 200) {
+						this.mcounter++;
 						if (this.delay == 0) {this.delay = 1;}
 				}	
 				else {	
@@ -123,7 +256,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		                spawn.setWorld(this.worldObj);
 	
 		                EntityLiving entityliving = spawn instanceof EntityLiving ? (EntityLiving)spawn : null;
-	                    spawn.setLocationAndAngles(this.pos.getX()+.5, this.pos.getY()+1f, this.pos.getZ()+.5, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
+		                spawn.setLocationAndAngles(this.pos.getX()+.5, this.pos.getY()+1f, this.pos.getZ()+.5, this.worldObj.rand.nextFloat() * 360.0F, 0.0F);
 
 
 	                        AnvilChunkLoader.spawnEntity(spawn, this.worldObj);
@@ -136,7 +269,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 			        }
 					this.display = null;
 					this.delay = 0;
-					this.summoncounter = 0;
+					this.mcounter = 0;
 					if (this.entity != null) {this.entity.setDead();}
 					this.entity = null;
 				}
@@ -146,9 +279,11 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 
 			else {
 	
-					if (this.summoncounter != 0) {this.summoncounter = 0; this.delay = 0;System.out.println("stop");}
+					if (this.mcounter != 0) {this.mcounter = 0; this.delay = 0;}
 			}
-				
+			
+			
+			//Particle Spawn
 			if (this.worldObj.isRemote && this.delay < 60 && this.delay != 0) {this.delay++;}
 			else if (this.worldObj.isRemote && this.delay == 0) {}
 			else if (this.worldObj.isRemote) {
@@ -171,6 +306,63 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 			else {}
 		}
 		
+	public void riftBreak() {
+			
+			if (this.direction == null) {
+				if (worldObj.getBlockState(pos.add(0,1,-3)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.NORTH;
+				} else if (worldObj.getBlockState(pos.add(0,1,3)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.SOUTH;
+				} else if (worldObj.getBlockState(pos.add(3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.WEST;
+				} else if (worldObj.getBlockState(pos.add(-3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
+	
+					this.direction = EnumFacing.EAST;
+				}
+			}
+			
+			if (direction == EnumFacing.NORTH) {
+				BlockPos spos = pos.add(-1,0,-3);
+				for(int y = 0; y<=2; y++) {
+					for(int x = 0; x<=2; x++) {
+						BlockPos cpos = spos.add(x,y,0);
+						worldObj.destroyBlock(cpos, false);
+					}
+				}
+			} else if (direction == EnumFacing.SOUTH) {
+				
+				BlockPos spos = pos.add(-1,0,3);
+				for(int y = 0; y<=2; y++) {
+					for(int x = 0; x<=2; x++) {
+						BlockPos cpos = spos.add(x,y,0);
+						worldObj.destroyBlock(cpos, false);
+					}
+				}
+			} else if (direction == EnumFacing.EAST) {
+				
+				BlockPos spos = pos.add(3,0,-1);
+				for(int y = 0; y<=2; y++) {
+					for(int z = 0; z<=2; z++) {
+						BlockPos cpos = spos.add(0,y,z);
+						worldObj.destroyBlock(cpos, false);
+					}
+				}
+			} else if (direction == EnumFacing.WEST) {
+				BlockPos spos = pos.add(-3,0,-1);
+				for(int y = 0; y<=2; y++) {
+					for(int z = 0; z<=2; z++) {
+						BlockPos cpos = spos.add(0,y,z);
+						worldObj.destroyBlock(cpos, false);
+					}
+				}
+				
+			}
+			this.rift = false;			
+		}
+
 	public boolean powered(Integer tier) {
 		Block source = null;
 		BlockPos spos = this.pos.add(-5, -5, -5);
@@ -202,9 +394,8 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 
 	public void setDisplayItem(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, ItemStack heldItem) {
 
-		
 		if (!this.worldObj.isRemote) {
-			
+			if (playerIn != null && ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)))this.direction = playerIn.getHorizontalFacing();
 			this.entity = new EntityItemProxy(this.worldObj, this.pos.getX(), this.pos.getY(), this.pos.getZ(), this.display.copy());
 			this.entity.setVelocity(0, 0, 0);
 			this.entity.setNoDespawn();

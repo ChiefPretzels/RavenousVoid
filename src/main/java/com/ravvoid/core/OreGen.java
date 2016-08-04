@@ -1,9 +1,6 @@
-package com.ravvoid.world;
+package com.ravvoid.core;
 
 import java.util.Random;
-
-import com.ravvoid.core.Ref;
-import com.ravvoid.core.VoidBlocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -21,7 +18,7 @@ public class OreGen implements IWorldGenerator {
 	private final WorldGenMinable oreGenOverworld;
 
 	public OreGen() {
-		oreGenOverworld = new WorldGenMinable(VoidBlocks.VOIDORE.getDefaultState(), 4, BlockMatcher.forBlock(Blocks.STONE));
+		oreGenOverworld = new WorldGenMinable(VoidBlocks.VOIDORE.getDefaultState(), 8, BlockMatcher.forBlock(Blocks.STONE));
 	}
 
 	@Override

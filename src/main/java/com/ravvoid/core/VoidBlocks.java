@@ -8,6 +8,7 @@ import com.ravvoid.blocks.ShardBlock;
 import com.ravvoid.blocks.VoidAltar;
 import com.ravvoid.blocks.VoidOre;
 import com.ravvoid.blocks.VoidRend;
+import com.ravvoid.blocks.VoidRift;
 import com.ravvoid.blocks.Conduit;
 import com.ravvoid.blocks.Crystalizer;
 
@@ -31,6 +32,7 @@ public class VoidBlocks {
 	public static Block CRYSTALIZER;
 	public static Block PURESHARDBLOCK;
 	public static Block CONDUIT;
+	public static Block VOIDRIFT;
 	
 	public static void init() {
 		
@@ -43,6 +45,7 @@ public class VoidBlocks {
 		CRYSTALIZER = new Crystalizer(Material.PISTON).setRegistryName("crystalizer").setLightLevel(0.3f).setUnlocalizedName("crystalizer").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
 		PURESHARDBLOCK = new PureShardBlock(Material.GLASS).setRegistryName("pureshardblock").setUnlocalizedName("pureshardblock").setLightLevel(0.5f).setHardness(0.3F);
 		CONDUIT = new Conduit(Material.PISTON).setRegistryName("conduit").setLightLevel(0.3f).setUnlocalizedName("conduit").setCreativeTab(VoidTabs.tabVoid).setHardness(0.5F).setResistance(0.5F);
+		VOIDRIFT = new VoidRift(Material.GROUND).setRegistryName("voidrift").setUnlocalizedName("voidrift").setLightLevel(0.5f).setHardness(0.3F);
 		
 		VOIDORE.setHarvestLevel("pickaxe", 2);
 	}
@@ -58,6 +61,7 @@ public class VoidBlocks {
 		registerBlock(CRYSTALIZER);
 		registerBlock(PURESHARDBLOCK);
 		registerBlock(CONDUIT);
+		registerBlock(VOIDRIFT);
 	}
 	
 	public static void registerRenders() {
@@ -71,6 +75,7 @@ public class VoidBlocks {
 		registerRender(CRYSTALIZER);
 		registerRender(PURESHARDBLOCK);
 		registerRender(CONDUIT);
+		registerRender(VOIDRIFT);
 	}
 	
 	public static void registerBlock(Block block) {
