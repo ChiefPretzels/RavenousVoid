@@ -25,7 +25,7 @@ public class ClientProxy extends CommonProxy {
 		super.preInit(event);
 		VoidItems.init();
 		RenderingRegistry.registerEntityRenderingHandler(EntityVoidBeast.class, RenderVoidBeast::new);
-		RenderingRegistry.registerEntityRenderingHandler(EntityShade.class, RenderShade::new);GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderingRegistry.registerEntityRenderingHandler(EntityShade.class, RenderShade::new);
 	}
 	
 	@Override

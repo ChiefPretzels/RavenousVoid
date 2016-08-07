@@ -90,7 +90,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		//nbt end
 		
 		public void update() {
-			
+
 			//Void Rend spawn
 			if(ItemStack.areItemsEqual(this.display, new ItemStack(VoidItems.VOIDORB)) || ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) &&  this.worldObj.getBlockState(this.pos.up()).getBlock() == Blocks.AIR && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == Blocks.AIR) {
 
@@ -119,7 +119,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 			else {
 				this.upkeepdelay++;
 			}
-			
+
 			//Void Rift spawn
 			if(!this.rift && ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
 
@@ -132,7 +132,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 						for(int y = 0; y<=2; y++) {
 							for(int x = 0; x<=2; x++) {
 								cpos = spos.add(x,y,0);
-								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+								if (worldObj.getBlockState(cpos).getBlock().isReplaceable(worldObj, pos)) {count++;}
 							}
 						}
 					} else if (direction == EnumFacing.SOUTH) {
@@ -141,7 +141,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 						for(int y = 0; y<=2; y++) {
 							for(int x = 0; x<=2; x++) {
 								cpos = spos.add(x,y,0);
-								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+								if (worldObj.getBlockState(cpos).getBlock().isReplaceable(worldObj, pos)) {count++;}
 							}
 						}
 					} else if (direction == EnumFacing.EAST) {
@@ -150,7 +150,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 						for(int y = 0; y<=2; y++) {
 							for(int z = 0; z<=2; z++) {
 								cpos = spos.add(0,y,z);
-								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+								if (worldObj.getBlockState(cpos).getBlock().isReplaceable(worldObj, pos)) {count++;}
 							}
 						}
 					} else if (direction == EnumFacing.WEST) {
@@ -158,7 +158,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 						for(int y = 0; y<=2; y++) {
 							for(int z = 0; z<=2; z++) {
 								cpos = spos.add(0,y,z);
-								if (worldObj.getBlockState(cpos).getBlock() == Blocks.AIR) {count++;}
+								if (worldObj.getBlockState(cpos).getBlock().isReplaceable(worldObj, pos)) {count++;}
 							}
 						}
 					}
@@ -176,7 +176,6 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 							this.delay = 0;
 							this.counter = 0;
 							
-							System.out.print(this.direction);
 							int s = 0;
 							if (direction == EnumFacing.NORTH) {
 								spos = pos.add(-1,0,-3);
@@ -184,6 +183,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 									for(int x = 0; x<=2; x++) {
 										cpos = spos.add(x,y,0);
 										s++;
+										worldObj.destroyBlock(cpos, true);
 										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
 										
 									}
@@ -195,6 +195,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 									for(int x = 0; x>=-2; x--) {
 										cpos = spos.add(x,y,0);
 										s++;
+										worldObj.destroyBlock(cpos, true);
 										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
 									}
 								}
@@ -205,6 +206,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 									for(int z = 0; z<=2; z++) {
 										cpos = spos.add(0,y,z);
 										s++;
+										worldObj.destroyBlock(cpos, true);
 										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
 									}
 								}
@@ -214,6 +216,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 									for(int z = 0; z>=-2; z--) {
 										cpos = spos.add(0,y,z);
 										s++;
+										worldObj.destroyBlock(cpos, true);
 										worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
 									}
 								}
@@ -224,8 +227,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 					}else {
 					}
 				} else {
-					this.delay = 0;
-					this.counter = 0;
+					if (this.counter != 0) {this.counter = 0; this.delay = 0;}
 				}
 				
 			}else if (this.rift && ItemStack.areItemsEqualIgnoreDurability(this.display, new ItemStack(VoidItems.AWAKENEDVOIDORB)) && worldObj.getBlockState(pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
@@ -237,8 +239,62 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 					} else this.riftBreak();						
 				} else this.counter++;
 			}else if (this.rift) this.riftBreak();
-			
-			
+
+			//Void Rift Direction check
+			if (this.rift && this.direction == null) {
+				BlockPos poss = pos;
+				BlockPos spos;
+				BlockPos cpos;
+				int s = 0;
+				if (worldObj.getBlockState(poss.add(0,1,-3)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.NORTH;
+					spos = pos.add(-1,0,-3);
+					for(int y = 0; y<=2; y++) {
+						for(int x = 0; x<=2; x++) {
+							cpos = spos.add(x,y,0);
+							s++;
+							worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+						}
+					}
+					
+				} else if (worldObj.getBlockState(poss.add(0,1,3)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.SOUTH;
+					spos = poss.add(1,0,3);
+					for(int y = 0; y<=2; y++) {
+						for(int x = 0; x>=-2; x--) {
+							cpos = spos.add(x,y,0);
+							s++;
+							worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+						}
+					}
+				} else if (worldObj.getBlockState(poss.add(3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
+	
+					this.direction = EnumFacing.EAST;
+					spos = poss.add(3,0,-1);
+					for(int y = 0; y<=2; y++) {
+						for(int z = 0; z<=2; z++) {
+							cpos = spos.add(0,y,z);
+							s++;
+							worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+						}
+					}
+					
+				} else if (worldObj.getBlockState(poss.add(-3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
+					
+					this.direction = EnumFacing.WEST;
+					spos = poss.add(-3,0,1);
+					for(int y = 0; y<=2; y++) {
+						for(int z = 0; z>=-2; z--) {
+							cpos = spos.add(0,y,z);
+							s++;
+							worldObj.setBlockState(cpos, VoidBlocks.VOIDRIFT.getDefaultState().withProperty(VoidRift.SPOT, s).withProperty(VoidRift.FACING, direction.getOpposite()));
+						}
+					}
+				}
+			}
+
 			//Mob spawn
 			if(this.display !=null && Ref.altarListTier1(this.display, this.worldObj) != null && this.worldObj.getBlockState(this.pos.up()).getBlock() == Blocks.AIR && this.worldObj.getBlockState(this.pos.add(0, 2, 0)).getBlock() == VoidBlocks.VOIDREND) {
 					
@@ -281,7 +337,8 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 	
 					if (this.mcounter != 0) {this.mcounter = 0; this.delay = 0;}
 			}
-			
+
+
 			
 			//Particle Spawn
 			if (this.worldObj.isRemote && this.delay < 60 && this.delay != 0) {this.delay++;}
@@ -300,6 +357,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		               	this.delay = 1;
 			}
 			
+			
 			if(this.entity != null && this.display != null && this.renderdelay == 0) {this.renderdelay++;}
 			else if (this.renderdelay > 5000 && this.entity != null) {this.entity.setNoDespawn();this.renderdelay = 0;}
 			else if (this.display != null && this.entity == null) {this.setDisplayItem(this.worldObj, this.pos, null, null, null);this.renderdelay = 0;}
@@ -307,23 +365,7 @@ public class TileEntityAltar extends TileEntity implements ITickable  {
 		}
 		
 	public void riftBreak() {
-			
-			if (this.direction == null) {
-				if (worldObj.getBlockState(pos.add(0,1,-3)).getBlock() == VoidBlocks.VOIDRIFT) {
-					
-					this.direction = EnumFacing.NORTH;
-				} else if (worldObj.getBlockState(pos.add(0,1,3)).getBlock() == VoidBlocks.VOIDRIFT) {
-					
-					this.direction = EnumFacing.SOUTH;
-				} else if (worldObj.getBlockState(pos.add(3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
-					
-					this.direction = EnumFacing.WEST;
-				} else if (worldObj.getBlockState(pos.add(-3,1,0)).getBlock() == VoidBlocks.VOIDRIFT) {
-	
-					this.direction = EnumFacing.EAST;
-				}
-			}
-			
+						
 			if (direction == EnumFacing.NORTH) {
 				BlockPos spos = pos.add(-1,0,-3);
 				for(int y = 0; y<=2; y++) {

@@ -1,5 +1,8 @@
 package com.ravvoid.items;
 
+import java.util.Random;
+
+import com.ravvoid.blocks.PureShardBlock;
 import com.ravvoid.core.VoidBlocks;
 
 import net.minecraft.entity.Entity;
@@ -22,7 +25,17 @@ public class PureVoidShard extends Item {
         if (playerIn.canPlayerEdit(blockpos, facing, stack) && worldIn.canBlockBePlaced(worldIn.getBlockState(blockpos).getBlock(), blockpos, false, facing, (Entity)null, stack) && VoidBlocks.PURESHARDBLOCK.canPlaceBlockAt(worldIn, blockpos))
         {
             --stack.stackSize;
-            worldIn.setBlockState(blockpos, VoidBlocks.PURESHARDBLOCK.getDefaultState());
+            Random rand = new Random();
+		int x = rand.nextInt(3);
+		if (x == 0) {
+			worldIn.setBlockState(blockpos, VoidBlocks.PURESHARDBLOCK.getDefaultState().withProperty(PureShardBlock.FACING, EnumFacing.NORTH));
+		} else if (x == 1) {
+			worldIn.setBlockState(blockpos, VoidBlocks.PURESHARDBLOCK.getDefaultState().withProperty(PureShardBlock.FACING, EnumFacing.EAST));
+		}else if (x == 2) {
+			worldIn.setBlockState(blockpos, VoidBlocks.PURESHARDBLOCK.getDefaultState().withProperty(PureShardBlock.FACING, EnumFacing.WEST));
+		}else if (x == 3) {
+			worldIn.setBlockState(blockpos, VoidBlocks.PURESHARDBLOCK.getDefaultState().withProperty(PureShardBlock.FACING, EnumFacing.SOUTH));
+		}
             return EnumActionResult.SUCCESS;
         }
         else

@@ -5,8 +5,9 @@
         "uvlock": true
     },
     "variants": {
-        "normal": [{
-
-        }]
+       "facing=north": { "model": "rv:pureshardblock" },
+        "facing=south": { "model": "rv:pureshardblock", "y": 180 },
+        "facing=west":  { "model": "rv:pureshardblock", "y": 270 },
+        "facing=east":  { "model": "rv:pureshardblock", "y": 90 }
     }
 }

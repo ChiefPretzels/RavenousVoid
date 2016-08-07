@@ -6,8 +6,11 @@ import com.ibm.icu.text.DecimalFormat;
 import com.ravvoid.core.VoidItems;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -24,11 +27,33 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ShardBlock extends Block {
 
 	protected static final AxisAlignedBB bounds = new AxisAlignedBB(0.3125d, 0.0d, 0.3125d, 0.6875d, 0.6875d, 0.6875d);
+	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	
 	public ShardBlock(Material materialIn) {
 		super(materialIn);
-
 	}
+	
+	@Override protected BlockStateContainer createBlockState() { return new BlockStateContainer(this, new IProperty[] {FACING}); }
+	
+	    public IBlockState getStateFromMeta(int meta)
+	    {
+	        EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+	        if (enumfacing.getAxis() == EnumFacing.Axis.Y)
+	        {
+	            enumfacing = EnumFacing.NORTH;
+	        }
+
+	        return this.getDefaultState().withProperty(FACING, enumfacing);
+	    }
+
+	    /**
+	     * Convert the BlockState into the correct metadata value
+	     */
+	    public int getMetaFromState(IBlockState state)
+	    {
+	        return ((EnumFacing)state.getValue(FACING)).getIndex();
+	    }
 		
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {

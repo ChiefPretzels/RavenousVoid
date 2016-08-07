@@ -6,28 +6,22 @@ import com.ravvoid.blocks.tileentity.TileEntityAltar;
 import com.ravvoid.blocks.tileentity.TileEntityConduit;
 import com.ravvoid.blocks.tileentity.TileEntityCrystallizer;
 import com.ravvoid.blocks.tileentity.TileEntityPile;
-import com.ravvoid.client.render.RenderVoidBeast;
 import com.ravvoid.core.CraftingManager;
+import com.ravvoid.core.DimensionRegistry;
 import com.ravvoid.core.OreGen;
 import com.ravvoid.core.Ref;
+import com.ravvoid.core.VoidBiomeRegistery;
 import com.ravvoid.core.VoidEntities;
-import com.ravvoid.entity.mob.EntityVoidBeast;
 import com.ravvoid.proxy.CommonProxy;
-import com.ravvoid.proxy.CommonProxy; 
 
-import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityEnderCrystal;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.SidedProxy;
 
 @Mod(modid = Ref.MODID, name = Ref.NAME, version = Ref.Version)
 public class VoidMod {
@@ -57,6 +51,8 @@ public class VoidMod {
 		VoidEntities.registerEntities();
 		CraftingManager.mainRegistery();
 		proxy.init(event);
+		VoidBiomeRegistery.mainRegistery();
+		DimensionRegistry.mainRegistry();
 	}
 	
 	@EventHandler
